@@ -1,0 +1,19 @@
+div {
+    border: 2px solid #0060cc;
+    background-color: #0f0c25;
+    color: #ffffff;
+    width: 50%;
+    margin: 20px auto 0 auto;
+    padding: 20px;
+    text-align: center;
+    font-family: arial;
+    font-size: 14px;
+}
+
+.displayNone {
+    display: none;
+}
+
+.displayBlock {
+    display: block;
+}
