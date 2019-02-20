@@ -42,22 +42,23 @@ reseting the form to try again
     </div>
     <div id="outputPanel">
         <p>Your story....</p>
-        <p id="theStory">nothing.</p>
+        <section id="theStory"></section>
         <button id="again">Again?</button>
     </div>
     <script type="text/javascript">
         const inputPanel = document.querySelector("#inputPanel");
         const outputPanel = document.querySelector("#outputPanel");
-        outputPanel.className = "displayNone";
         const warning = document.querySelector("#warning");
 
 
         const submit = document.querySelector("#submit");
-        submit.addEventListener("click", writeStory);
+        submit.addEventListener("click", writeStory, false);
+        submit.style.cursor = "pointer"
 
 
         const again = document.querySelector("#again");
-        again.addEventListener("click", resetPage, false);
+        again.addEventListener("click", resetPage);
+        again.style.cursor = "pointer"
 
         document.querySelector('#firstName').focus();
 
@@ -68,39 +69,114 @@ reseting the form to try again
 
         window.addEventListener("keydown", keydownHandler, false);
 
+        inputPanel.className = "displayBlock";
+        outputPanel.className = "displayNone";
+        warning.className = "displayNone";
+
+        firstName.focus()
+
         function keydownHandler(event) {
-            console.log("Enter key pressed");
+            if (event.keyCode === 13) {
+              //ascii keycode
+              console.log("Enter key pressed");
+              writeStory()
+            }
 
         }
 
         function checkComplete() {
             //verify the user filled in the form
+            // firstName.classList.remove('bgPink')
+            // favColor.classList.remove('bgPink')
+            // place.classList.remove('bgPink')
+            removePinkBG()
 
+            if (firstName.value == "") {
+              firstName.className = "bgPink"
+            }
+            if (favColor.value == "") {
+              favColor.className = "bgPink"
+            }
+            if (place.value == "") {
+              place.className = "bgPink"
+            }
+            if (firstName.value == ""  || favColor.value == "" || place.value == ""){
+              warning.className = "displayBlock"
+              return false
+            } else {
+              return true
+            }
         }
 
         function writeStory() {
             //grab the input values to write the story
-            let story = "In the beginning, "
-            story += firstName.value
-            story += " was a farmer. He wore a " + favColor.value +
-            " shirt. He then went to " + place.value + " for vacation."
-            theStory.innerHTML = story
+            if (checkComplete()==false) {
+              return
+            }
 
-            submit.blur();
-            inputPanel.innerHTML = submit.value;
+            // let story = "In the beginning, " + firstName.value +", "
+            // story += " was a farmer. He wore a " + favColor.value +
+            // " shirt. He/She then went to " + place.value + " for vacation."
+            // theStory.innerHTML = story
+
+            const storyText1 = "In the beginning, " + firstName.value +", "
+            const storyText2 = " was a farmer. He wore a " + favColor.value +
+            " shirt."
+            const storyText3 = "He/She then went to " + place.value + " for vacation."
+
+            // const newP1 = document.createElement('p')
+            // const newP2 = document.createElement('p')
+            // const newP3 = document.createElement('p')
+            // const newT1 = document.createTextNode(storyText1)
+            // const newT2 = document.createTextNode(storyText2)
+            // const newT3 = document.createTextNode(storyText3)
+            // newP1.appendChild(newT1)
+            // newP2.appendChild(newT2)
+            // newP3.appendChild(newT3)
+            // theStory.appendChild(newP1)
+            // theStory.appendChild(newP2)
+            // theStory.appendChild(newP3)
+
+            addTextNode(storyText1)
+            addTextNode(storyText2)
+            addTextNode(storyText3)
 
             inputPanel.className = "displayNone";
             outputPanel.className = "displayBlock";
+            warning.className = "displayNone";
         }
 
-
+        function addTextNode(text) {
+            const newP = document.createElement('p')
+            const newT = document.createTextNode(text)
+            newP.appendChild(newT)
+            theStory.appendChild(newP)
+        }
 
         function resetPage() {
             //put stuff here to reset the page so the user can try again
-            again.blur();
-            outputPanel.innerHTML = again.value;
+            inputPanel.className = "displayBlock"
+            outputPanel.className = "displayNone"
+            warning.className = "displayNone"
 
-            location.reload(); 
+            firstName.value = ""
+            favColor.value = ""
+            place.value = ""
+
+            // firstName.classList.remove('bgPink')
+            // favColor.classList.remove('bgPink')
+            // theStory.classList.remove('bgPink')
+            removePinkBG()
+
+            theStory.innerHTML = "";
+
+            firstName.focus()
+        }
+
+        function removePinkBG(){
+            firstName.classList.remove('bgPink')
+            favColor.classList.remove('bgPink')
+            theStory.classList.remove('bgPink')
         }
     </script>
     <link rel="stylesheet" href="css/style.css">

@@ -10,6 +10,14 @@ div {
     font-size: 14px;
 }
 
+#warning {
+  background-color: red;
+}
+
+.bgPink {
+  background-color: pink;
+}
+
 .displayNone {
     display: none;
 }
